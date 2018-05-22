@@ -34,10 +34,13 @@ public class Practice01ClipRectView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
+        //Canvas 操作需要保存(canvas.save())和恢复(canvas.restore())状态才能正常绘制，不然在界面刷新之后绘制就会出现问题
         int left = (getWidth() - bitmap.getWidth()) / 2;
         int top = (getHeight() - bitmap.getHeight()) / 2;
-
+        canvas.save();
+        canvas.clipRect(left + 50, top + 80, left + bitmap.getWidth() - 50, top + bitmap.getHeight() - 100);
         canvas.drawBitmap(bitmap, left, top, paint);
+        canvas.restore();
+
     }
 }

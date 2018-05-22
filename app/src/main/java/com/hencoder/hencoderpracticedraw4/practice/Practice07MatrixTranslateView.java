@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ public class Practice07MatrixTranslateView extends View {
     Bitmap bitmap;
     Point point1 = new Point(200, 200);
     Point point2 = new Point(600, 200);
+    Matrix mMatrix = new Matrix();
 
     public Practice07MatrixTranslateView(Context context) {
         super(context);
@@ -38,7 +40,24 @@ public class Practice07MatrixTranslateView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawBitmap(bitmap, point1.x, point1.y, paint);
-        canvas.drawBitmap(bitmap, point2.x, point2.y, paint);
+        mMatrix.setTranslate(point1.x - 100,point1.y - 100);
+        canvas.drawBitmap(bitmap, mMatrix, paint);
+
+        mMatrix.setTranslate(point2.x + 200,point2.y);
+        canvas.drawBitmap(bitmap,mMatrix, paint);
+
+//        canvas.save();
+//        mMatrix.reset();
+//        mMatrix.postTranslate(-100, -100);
+//        canvas.concat(mMatrix);
+//        canvas.drawBitmap(bitmap, point1.x, point1.y, paint);
+//        canvas.restore();
+//
+//        canvas.save();
+//        mMatrix.reset();
+//        mMatrix.postTranslate(200, 0);
+//        canvas.concat(mMatrix);
+//        canvas.drawBitmap(bitmap, point2.x, point2.y, paint);
+//        canvas.restore();
     }
 }
