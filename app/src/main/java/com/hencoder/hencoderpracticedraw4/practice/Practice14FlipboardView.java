@@ -20,22 +20,22 @@ public class Practice14FlipboardView extends View {
     Bitmap bitmap;
     Camera camera = new Camera();
     int degree;
-    ObjectAnimator animator = ObjectAnimator.ofInt(this, "degree", 0, 180);
+    ObjectAnimator animator = ObjectAnimator.ofInt(this,"degree",0,180);
 
     public Practice14FlipboardView(Context context) {
         super(context);
     }
 
-    public Practice14FlipboardView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+    public Practice14FlipboardView(Context context,@Nullable AttributeSet attrs) {
+        super(context,attrs);
     }
 
-    public Practice14FlipboardView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public Practice14FlipboardView(Context context,@Nullable AttributeSet attrs,int defStyleAttr) {
+        super(context,attrs,defStyleAttr);
     }
 
     {
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.maps);
+        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.maps);
 
         animator.setDuration(2500);
         animator.setInterpolator(new LinearInterpolator());
@@ -72,16 +72,29 @@ public class Practice14FlipboardView extends View {
         int x = centerX - bitmapWidth / 2;
         int y = centerY - bitmapHeight / 2;
 
+        // 第一遍绘制：上半部分
         canvas.save();
+        canvas.clipRect(0,0,getWidth(),centerY);
+        canvas.drawBitmap(bitmap,x,y,paint);
+        canvas.restore();
 
+        // 第二遍绘制：下半部分
+
+        if (degree < 90) {
+            canvas.clipRect(0,centerY,getWidth(),getHeight());
+        } else {
+            canvas.clipRect(0,0,getWidth(),centerY);
+        }
+
+        canvas.save();
         camera.save();
         camera.rotateX(degree);
-        canvas.translate(centerX, centerY);
+        canvas.translate(centerX,centerY);
         camera.applyToCanvas(canvas);
-        canvas.translate(-centerX, -centerY);
+        canvas.translate(-centerX,-centerY);
         camera.restore();
 
-        canvas.drawBitmap(bitmap, x, y, paint);
+        canvas.drawBitmap(bitmap,x,y,paint);
         canvas.restore();
     }
 }
